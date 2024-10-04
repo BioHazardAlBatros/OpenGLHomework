@@ -38,7 +38,6 @@ void main(int argc, char** argv)
 	glutReshapeFunc(reshape);
 	glutIdleFunc(simulation);
 	//glutKeyboardFunc(keyboardFunc);
-
 	// основной цикл обработки сообщений ОС
 	glutMainLoop();
 };
