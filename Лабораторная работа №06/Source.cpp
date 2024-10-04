@@ -25,6 +25,7 @@ void main(int argc, char** argv)
 {
 	initData();
 	glutInit(&argc, argv);	
+	//PlaySound(TEXT(R"(Polish_spin_toilet.wav)"), NULL, SND_LOOP | SND_ASYNC);
 	glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH | GLUT_MULTISAMPLE);
 
 	glutInitWindowPosition(200, 200);

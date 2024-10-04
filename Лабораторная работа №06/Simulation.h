@@ -2,6 +2,6 @@
 #include "Data.h"
 
 double getSimulationTime();
-int getFPS(bool delta = false);
+int getFPS();
 
 void simulation();

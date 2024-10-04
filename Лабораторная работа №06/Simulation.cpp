@@ -8,12 +8,11 @@ double getSimulationTime()
 	return (tempd - StartCounter.QuadPart) / Frequency.QuadPart;
 }
 
-int getFPS(bool delta)
+int getFPS()
 {
 	static int frameCount = 0;
 	static int FPS = 0;
 	static double timeElapsed;
-	if (delta) return FPS;
 	++frameCount;
 	timeElapsed = getSimulationTime();
 	if (timeElapsed >= 1.0)
@@ -27,7 +26,12 @@ int getFPS(bool delta)
 
 void simulation()
 {
-	double deltaTime = 1.0 / getFPS(true);
+	static double PrevTime = StartCounter.QuadPart;
+	LARGE_INTEGER CurrTime;
+	QueryPerformanceCounter(&CurrTime);
+	double deltaTime = (CurrTime.QuadPart - PrevTime)/Frequency.QuadPart;
+	PrevTime = CurrTime.QuadPart;
+
 	static float rotateSpeed = 90.0;
 	static float leanSpeed = 1.f;
 
