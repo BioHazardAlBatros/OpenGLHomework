@@ -2,6 +2,7 @@
 	GraphicObject::GraphicObject()
 	{
 		this->material = nullptr;
+		this->mesh = nullptr;
 		this->SetPosition({ 0.0,0.0,0.0 });
 		this->SetColor({ 0.0,0.0,0.0 });
 		this->SetAngle(0.0);
@@ -10,6 +11,7 @@
 	GraphicObject::GraphicObject(glm::vec3 pos, glm::vec3 color, float angle)
 	{
 		this->material = nullptr;
+		this->mesh = nullptr;
 		this->SetPosition(pos);
 		this->SetColor(color);
 		this->SetAngle(angle);
@@ -18,6 +20,7 @@
 	GraphicObject::GraphicObject(glm::vec3 pos, glm::vec3 color, float angle,std::shared_ptr<Material> mat)
 	{
 		this->SetMaterial(mat);
+		this->mesh = nullptr;
 		this->SetPosition(pos);
 		this->SetColor(color);
 		this->SetAngle(angle);
@@ -51,7 +54,7 @@
 		matrix[13] = this->position[1];
 		matrix[14] = this->position[2];
 
-		matrix[15] = 1.0;
+		matrix[15] = 1;
 	}
 	void GraphicObject::draw()
 	{
@@ -62,7 +65,10 @@
 
 		glPushMatrix();
 		glMultMatrixf(this->modelMatrix);
-		glutSolidTeapot(1.0);
+		if (this->mesh != nullptr)
+			this->mesh->Draw();
+		else
+			glutSolidTeapot(1.0);
 		glPopMatrix();
 	}
 	void GraphicObject::SetPosition(glm::vec3 newPosition)
@@ -94,5 +100,10 @@
 	void GraphicObject::SetMaterial(std::shared_ptr<Material> mat)
 	{
 		this->material = mat;
+		return;
+	}
+	void GraphicObject::SetMesh(std::shared_ptr<Mesh> mesh)
+	{
+		this->mesh = mesh;
 		return;
 	}

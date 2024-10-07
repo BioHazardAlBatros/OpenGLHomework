@@ -1,15 +1,40 @@
 #include "Data.h"
 
 std::vector<glm::vec3> teapotColors;
-int colorsAmount;
-int colorsIndex;
 
 std::vector<GraphicObject> DrawQueue;
 Camera MainCamera;
 Light MainLight;
-GLfloat globalAmbientColor[4]= { 0.1, 0.1, 0.1, 1.0 };
+
 std::vector<std::shared_ptr<Material>> Materials;
+std::vector<std::shared_ptr<Mesh>> Meshes;
 LARGE_INTEGER StartCounter,Frequency;
+
+int pathMap[21][21]{
+3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,
+3,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,2,0,0,0,3,
+3,0,2,1,2,0,2,0,2,2,2,1,2,0,2,0,2,0,2,2,3,
+3,0,2,0,2,0,0,0,2,0,2,0,0,0,2,0,1,0,0,0,3,
+3,0,1,0,2,2,1,2,2,0,2,0,2,2,2,1,2,0,2,0,3,
+3,0,0,0,0,0,0,0,0,0,2,0,0,0,0,0,2,0,2,0,3,
+3,0,2,2,1,1,2,0,2,0,2,2,2,2,2,0,2,2,2,0,3,
+3,0,2,0,0,0,2,0,2,0,0,0,0,0,2,0,0,0,0,0,3,
+3,0,2,0,2,2,2,0,2,0,2,2,1,2,2,2,1,2,2,0,3,
+3,0,0,0,2,0,0,0,2,0,2,0,0,0,0,0,0,0,1,0,3,
+3,2,2,2,2,0,2,2,2,0,2,0,2,2,2,2,2,2,2,0,3,
+3,0,0,0,2,0,0,0,1,0,2,0,0,0,2,0,0,0,0,0,3,
+3,0,2,0,2,2,2,0,2,1,2,0,2,2,2,0,2,2,2,2,3,
+3,0,2,0,0,0,2,0,0,0,2,0,0,0,2,0,2,0,0,0,3,
+3,2,2,2,2,0,2,2,2,0,2,2,2,0,1,0,2,2,2,0,3,
+3,0,0,0,0,0,2,0,2,0,0,0,2,0,1,0,0,0,2,0,3,
+3,0,2,0,2,1,2,0,2,0,2,2,2,0,2,2,2,0,2,0,3,
+3,0,1,0,1,0,0,0,0,0,2,0,0,0,2,0,0,0,0,0,3,
+3,0,2,1,2,0,2,2,2,2,2,0,2,0,2,0,2,2,2,2,3,
+3,0,0,0,0,0,0,0,0,0,0,0,2,0,2,0,0,0,0,0,3,
+3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3
+};
+std::shared_ptr<GameObject> mapObjects[21][21];
+GraphicObject planeGraphicObject;
 
 void initData()
 { 
@@ -17,40 +42,49 @@ void initData()
 	QueryPerformanceFrequency(&Frequency);
 
 	teapotColors = { {1.0,1.0,1.0},{0.0,0.0,1.0},{1.0,0.0,0.0},{1.0,1.0,0.0}, {1.0,0.0,1.0} };
-	colorsAmount = teapotColors.size();
+	
 	MainCamera.SetPosition({ 10, 15, 17.5 });
-	DrawQueue.push_back(GraphicObject({ -4.0,0.0,0.0 }, teapotColors[0], 0.0));
-	
-	DrawQueue.push_back(GraphicObject({ 0.0,0.0,4.0 }, teapotColors[1], 90.0));
-	DrawQueue.push_back(GraphicObject({ 4.0,0.0,0.0 }, teapotColors[2], 180.0));
-	DrawQueue.push_back(GraphicObject({ 0.0,0.0,-4.0 }, teapotColors[3], 270.0));
-	
-	for (int i = 0; i < 4; i++)
-	{
-		Materials.emplace_back(std::make_shared<Material>());
-		DrawQueue[i].SetMaterial(Materials[i]);
-	}
-	Materials[0]->LoadFromFile(R"(assets/materials/mat1.txt)");
-	Materials[1]->LoadFromFile(R"(assets/materials/mat2.txt)");
-	Materials[2]->LoadFromFile(R"(assets/materials/mat3.txt)");
-	Materials[3]->LoadFromFile(R"(assets/materials/mat4.txt)");
-	//DrawQueue[0].SetMaterial(std::make_shared<Material>(glm::vec4{ 1,1,1,1 }, //Diffuse 
-	//													glm::vec4{ 0,0,0,1 }, //Ambient
-	//													glm::vec4{ 0,0,0,1 }, //Specular
-	//													glm::vec4{ 0,0,0,1 }, 0.0));
-	//
-	//DrawQueue[1].SetMaterial(std::make_shared<Material>(glm::vec4{0,0,1,1}, //Diffuse 
-	//													glm::vec4{0,0,0,1}, //Ambient
-	//													glm::vec4{0,1,1,1}, //Specular
-	//													glm::vec4{0,0,0,1},128.0));
-	//
-	//DrawQueue[2].SetMaterial(std::make_shared<Material>(glm::vec4{ 1,0,0,1 }, //Diffuse 
-	//													glm::vec4{ 0,0,0,1 }, //Ambient
-	//													glm::vec4{ 1,1,0,1 }, //Specular
-	//													glm::vec4{ 0,0,0,1 }, 5.0));
-	//
-	//DrawQueue[3].SetMaterial(std::make_shared<Material>(glm::vec4{ 0,1,0,1 }, //Diffuse 
-	//													glm::vec4{ 0,1,0,1 }, //Ambient
-	//													glm::vec4{ 0,1,1,1 }, //Specular
-	//													glm::vec4{ 0,0,0,1 }, 64.0));
+
+	Materials.emplace_back(std::make_shared<Material>(R"(assets\materials\mat1.txt)"));//White
+	Materials.emplace_back(std::make_shared<Material>(R"(assets\materials\mat2.txt)"));//Blue Shiny
+	Materials.emplace_back(std::make_shared<Material>(R"(assets\materials\mat3.txt)"));//Orange Shiny
+	Materials.emplace_back(std::make_shared<Material>(R"(assets\materials\mat4.txt)"));//Green Ambient
+
+	Meshes.emplace_back(std::make_shared<Mesh>(R"(assets\models\ChamferBox.obj)"));//Movable
+	Meshes.emplace_back(std::make_shared<Mesh>(R"(assets\models\Box.obj)"));//Walls
+	Meshes.emplace_back(std::make_shared<Mesh>(R"(assets\models\Sphere.obj)"));	//Entity
+	Meshes.emplace_back(std::make_shared<Mesh>(R"(assets\models\SimplePlane.obj)"));//Floor
+//  Meshes.emplace_back(std::make_shared<Mesh>(R"(assets\models\Polish_Toilet.obj)")); 
+
+	planeGraphicObject.SetMesh(Meshes[3]);
+	planeGraphicObject.SetMaterial(Materials[0]);
+	planeGraphicObject.SetPosition({ 0,-0.501,0 });
+
+	GraphicObject chambox, graybox, darkbox;
+	chambox.SetMesh(Meshes[0]);
+	chambox.SetMaterial(Materials[2]);
+
+	graybox.SetMesh(Meshes[1]);
+	graybox.SetMaterial(Materials[1]);
+
+	darkbox.SetMesh(Meshes[1]);
+	darkbox.SetMaterial(Materials[3]);
+
+	for(int i = 0 ;i<21;i++)
+		for(int j=0;j<21;j++)
+			if (pathMap[i][j])
+			{
+				mapObjects[i][j] = std::make_shared<GameObject>();
+				mapObjects[i][j]->SetPosition(i-10, j-10);
+				switch (pathMap[i][j])
+				{
+				default: break;
+				case 1:
+					mapObjects[i][j]->SetGraphicObject(chambox); break;
+				case 2:
+					mapObjects[i][j]->SetGraphicObject(graybox); break;
+				case 3:
+					mapObjects[i][j]->SetGraphicObject(darkbox); break;
+				}
+			}
 }
