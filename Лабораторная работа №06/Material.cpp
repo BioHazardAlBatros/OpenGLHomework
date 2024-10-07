@@ -1,5 +1,5 @@
-#include "Data.h"
 #include "Material.h"
+
 Material::Material()
 {
 	this->material.push_back(glm::vec4(.8,.8,.8,1)); //diffuse
@@ -16,6 +16,12 @@ Material::Material(glm::vec4 diffuse, glm::vec4 ambient, glm::vec4 specular,glm:
 	this->material.push_back(emission);
 	this->shininess = shininess;
 }
+Material::Material(std::string sourcePath)
+{
+	this->material = std::vector<glm::vec4>(4);
+	this->LoadFromFile(sourcePath);
+}
+
 void Material::SetDiffuse(glm::vec4 color) 
 {
 	this->material[0] = color;
@@ -36,6 +42,7 @@ void Material::SetShininess(float percent)
 {
 	this->shininess = fmod(percent,128.0);
 };
+
 void Material::LoadFromFile(std::string sourcePath)
 {
 	std::ifstream File(sourcePath);

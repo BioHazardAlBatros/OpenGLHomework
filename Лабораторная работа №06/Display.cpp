@@ -13,10 +13,14 @@ void display(void)
 	
 	MainLight.Apply();
 	
-	for (GraphicObject& curr : DrawQueue)
-	{
-		curr.draw();
-	}
+	//for (GraphicObject& curr : DrawQueue)
+	//{
+	//	curr.draw();
+	//}
+	planeGraphicObject.draw();
+	for (auto& i : mapObjects)
+		for (auto& j : i)
+			if(j!=nullptr) j->Draw();
 	glutSwapBuffers();
 
 	char temp[80];

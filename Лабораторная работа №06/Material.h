@@ -20,6 +20,7 @@ class Material
 
 	public:
 	Material();
+	Material(std::string sourcePath);
 	Material(glm::vec4 diffuse, glm::vec4 ambient, glm::vec4 specular,glm::vec4 emission, float shininess);
 	void LoadFromFile(std::string sourcePath);
 	void SetDiffuse(glm::vec4 color);

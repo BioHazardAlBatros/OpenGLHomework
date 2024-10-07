@@ -2,7 +2,9 @@
 #include <iostream>
 #include <Windows.h>
 #include <fstream>
+#include <sstream>
 #include <vector>
+#include <string>
 
 #include <GL/gl.h>
 #include <GL/glu.h>
@@ -17,15 +19,17 @@ class Mesh
 private:
 	struct Vertex
 	{
-		//glm::vec3 pos;
-		//glm::vec3 normal;
-		//glm::vec2 texPos;
-		GLfloat pos[3];
-		GLfloat normal[3];
-		GLfloat texPos[2];
+		glm::vec3 pos;
+		glm::vec3 normal;
+		glm::vec2 texPos;
+		//GLfloat pos[3]; 12
+		//GLfloat normal[3]; 12
+		//GLfloat texPos[2]; 8
 	};
 	std::vector<Vertex> vertices;
 public:
+	Mesh();
+	Mesh(std::string sourcePath);
 	void LoadFromFile(std::string sourcePath);
 	void Draw();
 

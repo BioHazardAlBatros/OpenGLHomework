@@ -16,7 +16,7 @@ int getFPS()
 	++frameCount;
 	timeElapsed = getSimulationTime();
 	if (timeElapsed >= 1.0)
-	{
+	{	
 		QueryPerformanceCounter(&StartCounter);
 		FPS = frameCount;
 		frameCount = 0;
@@ -44,5 +44,9 @@ void simulation()
 	if (static_cast<bool>(GetAsyncKeyState(0x45)))		  MainCamera.LeanLeftRight(-leanSpeed * deltaTime);
 	if (static_cast<bool>(GetAsyncKeyState(0x51)))	      MainCamera.LeanLeftRight(leanSpeed * deltaTime);
 
+	/*for (GraphicObject& i : DrawQueue)
+	{
+		i.SetAngle(i.GetAngle() + 2.5);
+	}*/
 	glutPostRedisplay();
 }

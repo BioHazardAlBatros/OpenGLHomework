@@ -9,11 +9,13 @@
 #include <glm/gtc/type_ptr.hpp>
 
 #include "Material.h"
+#include "Mesh.h"
 
 class GraphicObject
 {
 private:
 	std::shared_ptr<Material> material;
+	std::shared_ptr<Mesh> mesh;
 	glm::vec3 position;
 	glm::vec3 color;
 	float angle;
@@ -27,6 +29,7 @@ public:
 	glm::vec3 GetPosition();
 
 	void SetMaterial(std::shared_ptr<Material> mat);
+	void SetMesh(std::shared_ptr<Mesh> mesh);
 
 	void SetAngle(float newAngle);
 	float GetAngle();
