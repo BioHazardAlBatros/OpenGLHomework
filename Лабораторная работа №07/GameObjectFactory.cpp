@@ -19,7 +19,7 @@ bool GameObjectFactory::Init(std::string sourcePath)
 		std::cerr << jsonFile.GetParseError()<<std::endl;
 		return false;
 	}
-	
+	File.close();
 	for (auto& type : jsonFile.GetObject())
 	{
 		std::cout << '\n'<<type.name.GetString() << ':';
