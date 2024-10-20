@@ -54,7 +54,7 @@ void initData()
 	Meshes.emplace_back(std::make_shared<Mesh>(R"(assets\models\Box.obj)"));//Walls
 	Meshes.emplace_back(std::make_shared<Mesh>(R"(assets\models\Sphere.obj)"));	//Entity
 	Meshes.emplace_back(std::make_shared<Mesh>(R"(assets\models\SimplePlane.obj)"));//Floor
-//  Meshes.emplace_back(std::make_shared<Mesh>(R"(assets\models\Polish_Toilet.obj)")); 
+ // Meshes.emplace_back(std::make_shared<Mesh>(R"(assets\models\Krafton.obj)")); 
 
 	planeGraphicObject.SetMesh(Meshes[3]);
 	planeGraphicObject.SetMaterial(Materials[0]);

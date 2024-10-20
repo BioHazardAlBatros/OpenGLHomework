@@ -1,0 +1,62 @@
+{
+   "LightObject": {
+    "mesh": "assets\\models\\ChamferBox.obj",
+    "material": {
+      "diffuse": [ 1.0, 0.0, 0.0, 1.0 ],
+      "ambient": [ 0.0, 0.0, 0.0, 1.0 ],
+      "specular": [ 1.0, 1.0, 0.0, 1.0 ],
+      "emission": [ 0.0, 0.0, 0.0, 1.0 ],
+      "shininess": 5.0
+    }
+  },
+  "HeavyObject": {
+    "mesh": "assets\\models\\Box.obj",
+    "material": {
+      "diffuse": [0.0,0.0,1.0,1.0],
+      "ambient": [ 0.0, 0.0, 0.0, 1.0 ],
+      "specular": [ 0.0, 1.0, 1.0, 1.0 ],
+      "emission": [ 0.0, 0.0, 0.0, 1.0 ],
+      "shininess": 128.0
+    }
+  },
+  "Border": {
+    "mesh": "assets\\models\\Box.obj",
+    "material": {
+      "diffuse": [0.0,1.0,0.0,1.0],
+      "ambient": [ 0.0, 1.0, 0.0, 1.0 ],
+      "specular": [ 0.0, 1.0, 1.0, 1.0 ],
+      "emission": [ 0.0, 0.0, 0.0, 1.0 ],
+      "shininess": 64.0
+    }
+  },
+  "Player": {
+    "mesh": "assets\\models\\Sphere.obj",
+    "material": {
+      "diffuse": [ 1.0, 0.0, 0.0, 1.0 ],
+      "ambient": [ 0.0, 0.0, 0.0, 1.0 ],
+      "specular": [ 1.0, 1.0, 0.0, 1.0 ],
+      "emission": [ 0.0, 0.0, 0.0, 1.0 ],
+      "shininess": 5.0
+    }
+  },
+  "Enemy": {
+    "mesh": "assets\\models\\Sphere.obj",
+    "material": {
+      "diffuse": [1.0,1.0,1.0,1.0],
+      "ambient": [0.0,0.0,0.0,1.0],
+      "specular": [ 0.0, 0.0, 0.0, 1.0 ],
+      "emission": [ 0.0, 0.0, 0.0, 1.0],
+      "shininess": 0.0
+    }
+  },
+  "Bomb": {
+    "mesh": "assets\\models\\Sphere.obj",
+    "material": {
+      "diffuse": [ 1.0, 1.0, 1.0, 1.0 ],
+      "ambient": [ 0.0, 0.0, 0.0, 1.0 ],
+      "specular": [ 0.0, 0.0, 0.0, 1.0 ],
+      "emission": [ 0.0, 0.0, 0.0, 1.0 ],
+      "shininess": 0.0
+    } 
+  }
+}
