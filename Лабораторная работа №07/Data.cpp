@@ -43,7 +43,6 @@ void initData()
 	MainCamera.SetPosition({ 0, 15, 17.5 });
 
 	gameObjFactory.Init(R"(assets/GameObjectData.json)");
-	//gameObjFactory.Init(R"(example/data/GameObjectsDescription.json)");
 	planeGraphicObject.SetMesh(std::make_unique<Mesh>(R"(assets\models\SimplePlane.obj)"));
 	planeGraphicObject.SetMaterial(std::make_unique<Material>(R"(assets\materials\mat1.txt)"));
 	planeGraphicObject.SetPosition({ 0,-0.501,0 });

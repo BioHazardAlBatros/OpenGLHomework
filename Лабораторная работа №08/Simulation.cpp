@@ -1,5 +1,6 @@
 #include "Simulation.h"
 #include <iostream>
+
 double getSimulationTime()
 {
 	LARGE_INTEGER temp;

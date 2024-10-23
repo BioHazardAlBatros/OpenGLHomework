@@ -13,7 +13,6 @@ class GameObjectFactory
 private:
 	std::vector<std::shared_ptr<Material>> Materials;
 	std::vector<std::shared_ptr<Mesh>> Meshes;
-	GraphicObject chambox, graybox, darkbox,sphere;
 public:
 	enum GameObjectType
 	{
