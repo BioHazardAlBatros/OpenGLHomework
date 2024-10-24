@@ -19,13 +19,17 @@ bool GameObjectFactory::Init(std::string sourcePath)
 		std::cerr << jsonFile.GetParseError()<<std::endl;
 		return false;
 	}
-	
+
+//	std::set<std::string> MeshPaths;
 	for (auto& type : jsonFile.GetObject())
 	{
 		std::cout << '\n'<<type.name.GetString() << ':';
-//		if (!type.value.HasMember("material") || !type.value.HasMember("mesh")) break;
-		//to do: exclude mesh copies
-		Meshes.emplace_back(std::make_shared<Mesh>(jsonFile[type.name]["mesh"].GetString()));
+		//auto MeshPtr = MeshPaths.find(type.name.GetString());
+		//if (MeshPtr == MeshPaths.end())
+			Meshes.emplace_back(std::make_shared<Mesh>(jsonFile[type.name]["mesh"].GetString()));
+		//else
+		//	Meshes.emplace_back(Meshes[0]);
+		//MeshPaths.insert(type.name.GetString()); |to do
 
 		std::cout << "Getting material data:\n";
 		Materials.emplace_back(std::make_shared<Material>());
@@ -42,12 +46,8 @@ bool GameObjectFactory::Init(std::string sourcePath)
 		Materials.back()->SetEmission({ tempArr[0].GetDouble(),tempArr[1].GetDouble() ,tempArr[2].GetDouble() ,tempArr[3].GetDouble() });
 		
 		Materials.back()->SetShininess(jsonFile[type.name]["material"]["shininess"].GetDouble());
-		//what the fuck?
 	}
 	std::endl(std::cout<<std::endl); //https://www.youtube.com/watch?v=GS1-255aj3c
-
-	//	Materials[1] = (std::make_shared<Material>(R"(assets\materials\mat2.txt)"));//Blue Shiny  <--- fuck you
-
 	return true;
 };
 std::shared_ptr<GameObject> GameObjectFactory::Create(GameObjectType type, glm::vec2 pos) 

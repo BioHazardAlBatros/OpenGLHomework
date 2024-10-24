@@ -1,12 +1,19 @@
 #include "Mesh.h"
-		Mesh::Mesh() = default;
+		Mesh::Mesh()
+		{
+			indexCount = 0;
+			glGenBuffers(2, bufferIds);
+		};
 		Mesh::Mesh(std::string sourcePath)
 		{
+			indexCount = 0;
+			glGenBuffers(2, bufferIds);
 			this->LoadFromFile(sourcePath);
 		}
 		void Mesh::LoadFromFile(std::string sourcePath)
 		{
-			//Parsing OBJ File data (all fields should be present though)
+			std::vector<Vertex> vertices;
+			std::vector<GLuint> indices;
 			std::ifstream File(sourcePath);
 			if (!File)
 			{
@@ -97,22 +104,35 @@
 					  << normCount << " vertex normals, "
 					  << texCount << " texture coords, " 
 				      << facesCount << " faces loaded."<<std::endl;
-			/* moved vertice creation to read cycle */
+			indexCount = indices.size();
+
+			glBindBuffer(GL_ARRAY_BUFFER, bufferIds[0]);
+			glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(Vertex), vertices.data(), GL_STATIC_DRAW);
+			
+			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, bufferIds[1]);
+			glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(GLuint), indices.data(), GL_STATIC_DRAW);
+			
+			glBindBuffer(GL_ARRAY_BUFFER, 0);
+			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 		}
 		void Mesh::Draw() 
 		{
-			if (vertices.size() == 0) return;
+			glBindBuffer(GL_ARRAY_BUFFER, bufferIds[0]);
+			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, bufferIds[1]);
+			
 			glEnableClientState(GL_VERTEX_ARRAY);
 			glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 			glEnableClientState(GL_NORMAL_ARRAY);
 					
-			glVertexPointer  (3, GL_FLOAT, sizeof(Vertex), glm::value_ptr(vertices[0].pos));
-			glNormalPointer  (GL_FLOAT,	   sizeof(Vertex), glm::value_ptr(vertices[0].normal));
-			glTexCoordPointer(2, GL_FLOAT, sizeof(Vertex), glm::value_ptr(vertices[0].texPos));
-			glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, indices.data());
+			glVertexPointer  (3, GL_FLOAT, sizeof(Vertex), (void*)offsetof(Vertex,pos));
+			glNormalPointer  (GL_FLOAT,	   sizeof(Vertex), (void*)offsetof(Vertex,normal));
+			glTexCoordPointer(2, GL_FLOAT, sizeof(Vertex), (void*)offsetof(Vertex,texPos));
+			glDrawElements(GL_TRIANGLES, indexCount, GL_UNSIGNED_INT, 0);
 
 			glDisableClientState(GL_VERTEX_ARRAY);
 			glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 			glDisableClientState(GL_NORMAL_ARRAY);
-
+			
+			glBindBuffer(GL_ARRAY_BUFFER, 0);
+			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 		};

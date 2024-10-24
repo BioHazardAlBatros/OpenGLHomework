@@ -7,6 +7,8 @@
 #include <unordered_map>
 #include <string>
 
+
+#include <GL/glew.h>
 #include <GL/gl.h>
 #include <GL/glu.h>
 #include "GL/freeglut.h"
@@ -25,8 +27,10 @@ private:
 		glm::vec3 normal;
 		glm::vec2 texPos;
 	};
-	std::vector<Vertex> vertices;
-	std::vector<GLuint> indices;
+	//std::vector<Vertex> vertices;
+	//std::vector<GLuint> indices;
+	int indexCount;
+	GLuint bufferIds[2];
 public:
 	Mesh();
 	Mesh(std::string sourcePath);

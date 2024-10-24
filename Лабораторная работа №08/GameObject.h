@@ -4,6 +4,7 @@
 #include <fstream>
 #include <vector>
 
+#include <GL/glew.h>
 #include <GL/gl.h>
 #include <GL/glu.h>
 #include "GL/freeglut.h"
@@ -13,16 +14,26 @@
 
 #include "GraphicObject.h"
 
+enum class MoveDirection
+{
+	STOP, LEFT, RIGHT, UP, DOWN
+};
+
 class GameObject
 {
 private:
 	glm::ivec2 position;
 	GraphicObject graphicObject;
+	MoveDirection dir;
+	float speed, progress;
 public:
 	GameObject();
 	void SetGraphicObject(const GraphicObject& object);
 	void SetPosition(int x, int y);
 	void SetPosition(glm::ivec2 pos);
 	glm::ivec2 GetPosition();
+	bool isMoving();
 	void Draw();
+	void Move(MoveDirection direction, float speed = 5.0f);
+	void Simulate(float deltaTime);
 };

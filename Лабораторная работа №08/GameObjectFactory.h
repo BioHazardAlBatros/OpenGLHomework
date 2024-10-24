@@ -2,6 +2,7 @@
 #include <windows.h> //Required for RapidJSON
 #include <document.h> //RapidJSON Document.h
 #include <istreamwrapper.h> //RapidJSON istreamwrapper.h
+//#include <set>
 
 #include "Mesh.h"
 #include "Material.h"

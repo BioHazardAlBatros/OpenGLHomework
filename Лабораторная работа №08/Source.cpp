@@ -16,14 +16,8 @@ void reshape(int w, int h)
 	gluPerspective(25.0, (float)w / h, 0.2, 70.0);
 };
 
-//void keyboardFunc(unsigned char key, int x, int y)
-//{
-//	printf("Key code is %i\n", key);
-//};
-
 void main(int argc, char** argv)
 {
-	initData();
 	glutInit(&argc, argv);	
 	glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH | GLUT_MULTISAMPLE);
 
@@ -31,16 +25,19 @@ void main(int argc, char** argv)
 	glutInitWindowSize(800, 600);
 	glutCreateWindow("Laba_08");
 
+	printf("GL_VENDOR = %s\n", glGetString(GL_VENDOR));
+	printf("GL_RENDERER = %s\n", glGetString(GL_RENDERER));
+	printf("GL_VERSION = %s\n\n", glGetString(GL_VERSION));
+
 	GLenum err = glewInit();
 	if (err != GLEW_OK)
 	{
-		std::cout << "Error: " << glewGetErrorString(err);
+		printf("Error: %s\n", glewGetErrorString(err));
 	}
-	std::cout << "Using GLEW " << glewGetString(GLEW_VERSION)<<'\n';
-	if (GLEW_ARB_vertex_buffer_object) {
-		printf("VBO is supported");
-	};
-		
+	printf("Using GLEW %s\n",glewGetString(GLEW_VERSION));
+
+	initData();
+
 	glutDisplayFunc(display);
 	glutReshapeFunc(reshape);
 	glutIdleFunc(simulation);
