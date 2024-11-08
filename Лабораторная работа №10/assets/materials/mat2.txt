@@ -1,0 +1,5 @@
+diffuse 0 0 1 1
+ambient 0 0 0 1
+specular 0 1 1 1
+emission 0 0 0 1
+shininess 128.0
