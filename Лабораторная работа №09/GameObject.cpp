@@ -10,9 +10,13 @@ GameObject::GameObject()
 }
 int GameObject::GetLastDir()
 {
-	if (this->lastdir != MoveDirection::STOP)
-		return static_cast<int>(this->lastdir);
-	this->lastdir = static_cast<MoveDirection>(rand() % 4);
+	return rand() % 4;
+//THIS IS BROKEN :D
+	if (this->lastdir == MoveDirection::STOP)
+		this->lastdir = static_cast<MoveDirection>((rand() % 4) +1);
+	std::cout << static_cast<int>(this->lastdir)-1<< ' ' << static_cast<int>(this->dir)<<' ';
+	return static_cast<int>(this->lastdir)-1;
+//THIS IS BROKEN D:
 }
 glm::ivec2 GameObject::GetPosition()
 {
@@ -55,7 +59,7 @@ void GameObject::Simulate(float deltaTime)
 	glm::ivec2 playerPos = this->GetPosition();
 	if (this->progress > 1.0) 
 	{   
-		this->lastdir = this->dir;
+		this->lastdir = this->dir;//<- BROKEN 
 		this->dir = MoveDirection::STOP;
 		this->SetPosition(round(this->graphicObject.GetPosition().x), round(this->graphicObject.GetPosition().z));
 		return;

@@ -34,13 +34,15 @@ void MoveEnemy(std::shared_ptr<GameObject>& entity)
 		{3,10,11,10,12,MoveDirection::DOWN}
 	};
 	glm::ivec2 entityPos = entity->GetPosition();
-	int PickMove = rand()%4;
+	int PickMove = entity->GetLastDir();
+//	int PickMove = rand() % 4;
 	if (!entity->isMoving() && pathMap[entityPos.x + Moves[PickMove].x1][entityPos.y + Moves[PickMove].y1] == 0)
 	{
 			entity->Move(Moves[PickMove].dir,3);
 			std::swap(pathMap[entityPos.x + Moves[PickMove].x1][entityPos.y + Moves[PickMove].y1], 
 					  pathMap[entityPos.x + 10][entityPos.y + 10]);
 	}
+
 }
 
 void MovePlayer()
