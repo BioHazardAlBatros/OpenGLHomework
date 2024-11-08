@@ -32,5 +32,4 @@ public:
 	Mesh(std::string sourcePath);
 	void LoadFromFile(std::string sourcePath);
 	void Draw();
-
 };
