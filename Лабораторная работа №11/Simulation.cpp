@@ -45,8 +45,9 @@ void MoveEnemy(std::shared_ptr<GameObject>& entity)
 			entity->Move(Moves[PickMove].dir,3);
 			std::swap(pathMap[entityPos.x + Moves[PickMove].x1][entityPos.y + Moves[PickMove].y1], 
 					  pathMap[entityPos.x + 10][entityPos.y + 10]);
+			std::swap(mapObjects[entityPos.x + Moves[PickMove].x1][entityPos.y + Moves[PickMove].y1],
+				mapObjects[entityPos.x + 10][entityPos.y + 10]);
 	}
-
 }
 
 void MovePlayer()
@@ -107,7 +108,7 @@ void GameObjectsSimulation(float deltaTime)
 void DestroyIfPossible(glm::ivec2 pos,glm::ivec2 displacement,bool Decrease)
 {
 	if (Decrease) displacement *= -1;
-	
+
 	if (Player) 
 	{
 		glm::ivec2 realPos{ pos.x-10,pos.y - 10 };
@@ -120,23 +121,31 @@ void DestroyIfPossible(glm::ivec2 pos,glm::ivec2 displacement,bool Decrease)
 		}
 	}
 
-	if (pathMap[pos.x][pos.y] == 0 && pathMap[pos.x + displacement.x][pos.y+ displacement.y] != 0)
+	if (pathMap[pos.x][pos.y] == 1 || pathMap[pos.x][pos.y] == 4)
 	{
-		if (pathMap[pos.x + displacement.x][pos.y + displacement.y] == 1 || pathMap[pos.x + displacement.x][pos.y + displacement.y] == 4)
-		{
-			for (std::shared_ptr<GameObject>& EnemyPointer : Enemy)
-				if (mapObjects[pos.x + displacement.x][pos.y + displacement.y] == EnemyPointer) EnemyPointer.reset();
-			mapObjects[pos.x +displacement.x][pos.y + displacement.y].reset();
-			pathMap[pos.x + displacement.x][pos.y + displacement.y] = 0;
-			return;
-		}
-	}
-	if (pathMap[pos.x][pos.y] != 0 && (pathMap[pos.x][pos.y] == 1 || pathMap[pos.x][pos.y] == 4))
-	{
-		for (std::shared_ptr<GameObject>& EnemyPointer : Enemy)
-			if (mapObjects[pos.x][pos.y] == EnemyPointer) EnemyPointer.reset();
+		//Если в клетке враг, то также уничтожаем ссылку на объект в массиве указателей на врага 
+		for (int i = 0; i < 3; i++)
+			if (Enemy[i] && Enemy[i] == mapObjects[pos.x][pos.y])
+			{
+				Enemy[i].reset();
+				break;
+			}
 		mapObjects[pos.x][pos.y].reset();
-		pathMap[pos.x ][pos.y] = 0;
+		pathMap[pos.x][pos.y] = 0;
+		return;
+	}
+	if (pathMap[pos.x][pos.y] == 0 && 
+	   (pathMap[pos.x + displacement.x][pos.y + displacement.y] == 1 || pathMap[pos.x + displacement.x][pos.y + displacement.y] == 4))
+	{
+		//Если в клетке враг, то также уничтожаем ссылку на объект в массиве указателей на врага 
+		for (int i=0;i<3;i++)
+			if (Enemy[i] && Enemy[i] == mapObjects[pos.x + displacement.x][pos.y + displacement.y])
+			{
+				Enemy[i].reset();
+				break;
+			}
+		mapObjects[pos.x +displacement.x][pos.y + displacement.y].reset();
+		pathMap[pos.x + displacement.x][pos.y + displacement.y] = 0;	
 	}
 	return;
 }
@@ -147,7 +156,7 @@ void BombSimulation(double currentTime)
 	static LARGE_INTEGER placementTime;
 	static glm::ivec2 bombPos;
 	static bool isBombSet = false;
-	if (!Player->isMoving() && !isBombSet && static_cast<bool>(GetAsyncKeyState(VK_SPACE)))
+	if (Player && !Player->isMoving() && !isBombSet && (GetAsyncKeyState(VK_SPACE))&0x8000)
 	{
 		isBombSet = true;
 		QueryPerformanceCounter(&placementTime);
@@ -155,7 +164,8 @@ void BombSimulation(double currentTime)
 		mapObjects[bombPos.x][bombPos.y] = gameObjFactory.Create(GameObjectFactory::BOMB, bombPos - 10);
 		pathMap[bombPos.x][bombPos.y] = 5;
 	}
-	//Timer State
+
+	//Состояние таймера
 	//std::printf("%f %f\n", currentTime - placementTime.QuadPart, secondsToActivate * Frequency.QuadPart);
 	if(isBombSet && currentTime - placementTime.QuadPart >= timeToActivate)
 	{
@@ -163,6 +173,19 @@ void BombSimulation(double currentTime)
 		Decals.emplace_back(Decal({bombPos.x-10,bombPos.y-10}));
 		mapObjects[bombPos.x][bombPos.y].reset();
 		pathMap[bombPos.x][bombPos.y] = 0;
+
+		//Состояние карт
+		//for (int i = 0; i < 21; i++) {
+		//	for (int j = 0; j < 21; j++)
+		//		std::cout << pathMap[j][i] << ' ';
+		//	std::cout << std::endl;
+		//}
+		//std::cout << std::endl;
+		//for (int i = 0; i < 21; i++) {
+		//	for (int j = 0; j < 21; j++)
+		//		std::cout << mapObjects[j][i] << ' ';
+		//	std::cout << std::endl;
+		//}
 
 		DestroyIfPossible({ bombPos.x - 1,bombPos.y }, { 1,0 }, true);//Клетки слева
 		DestroyIfPossible({ bombPos.x + 1,bombPos.y }, { 1,0 }, false);//Клетки справа
@@ -183,15 +206,14 @@ void simulation()
 	CameraSimulation(deltaTime);
 	GameObjectsSimulation(deltaTime);
 
-	if (Player)BombSimulation(CurrTime.QuadPart);
 	if (Player)MovePlayer();
+	BombSimulation(CurrTime.QuadPart);
 
-	//Контроль движений врагов|Нажать NUM8
-
+	//Контроль движений врагов|Зажать NUM8
 	if (!static_cast<bool>(GetAsyncKeyState(VK_NUMPAD8)))
 	{
 		for (int i = 0; i < 3; i++)
-			if(Enemy[i])MoveEnemy(Enemy[i]);
+			if(Enemy[i]) MoveEnemy(Enemy[i]);
 	}
 	glutPostRedisplay();
 }

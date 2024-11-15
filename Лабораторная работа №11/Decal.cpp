@@ -14,7 +14,6 @@ Decal::Decal()
 }
 std::shared_ptr<Mesh> Decal::decalMesh = nullptr;
 std::shared_ptr<PhongMaterialWithTexture> Decal::decalTexture = nullptr;
-int Decal::lastIndex = 0;
 
 void Decal::Init()
 {
