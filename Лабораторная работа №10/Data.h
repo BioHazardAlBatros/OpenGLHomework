@@ -22,12 +22,15 @@
 #include "Light.h"
 #include "Material.h"
 #include "Texture.h"
+#include "PhongMaterial.h"
+#include "PhongMaterialWithTexture.h"
 #include "GameObjectFactory.h"
 
 extern GameObjectFactory gameObjFactory;
 
 extern Camera MainCamera;//(10, 15, 17.5);
 extern Light MainLight;
+extern Light EnemyLight[3];
 
 extern int pathMap[21][21];
 // список игровых объектов расположенных на карте
@@ -35,7 +38,7 @@ extern std::shared_ptr<GameObject> mapObjects[21][21];
 extern std::shared_ptr<GameObject> Player;
 extern std::shared_ptr<GameObject> Enemy[3];
 // графический объект для плоскости (частный случай)
-extern Texture planeTexture;
+extern std::shared_ptr<Texture> planeTexture;
 extern GraphicObject planeGraphicObject;
 
 extern LARGE_INTEGER StartCounter,Frequency;

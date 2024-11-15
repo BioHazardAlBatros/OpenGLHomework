@@ -1,5 +1,7 @@
 #include "Texture.h"
 
+Texture::Texture() : tIndex(0) {};
+
 void Texture::DisableAll() 
 {
 	glDisable(GL_TEXTURE0);
@@ -23,7 +25,7 @@ void Texture::LoadFromFile(std::string sourcePath)
 	int format = ilGetInteger(IL_IMAGE_FORMAT);
 	int type = ilGetInteger(IL_IMAGE_TYPE);
 
-	std::vector<BYTE> pixmap(width * height * 3);
+	std::vector<BYTE> pixmap(width * height * 4);
 
 	ilCopyPixels(0,0,0,width, height,1,format,type,pixmap.data());
 	ilBindImage(0);

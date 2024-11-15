@@ -6,6 +6,8 @@
 
 #include "Mesh.h"
 #include "Material.h"
+#include "PhongMaterial.h"
+#include "PhongMaterialWithTexture.h"
 #include "GraphicObject.h"
 #include "GameObject.h"
 

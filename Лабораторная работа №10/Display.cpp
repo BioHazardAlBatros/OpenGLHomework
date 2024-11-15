@@ -6,7 +6,7 @@ void DrawPlane()
 	glActiveTexture(GL_TEXTURE0);
 	glEnable(GL_TEXTURE_2D);
 	glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
-	planeTexture.Apply();
+	//planeTexture.Apply();
 	planeGraphicObject.Draw();
 	Texture::DisableAll();
 }

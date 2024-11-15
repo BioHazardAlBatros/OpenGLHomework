@@ -4,18 +4,15 @@ double getSimulationTime()
 {
 	LARGE_INTEGER temp;
 	QueryPerformanceCounter(&temp);
-	double tempd = temp.QuadPart;
-	return (tempd - StartCounter.QuadPart) / Frequency.QuadPart;
+	return temp.QuadPart - StartCounter.QuadPart;
 }
 
 int getFPS()
 {
 	static int frameCount = 0;
 	static int FPS = 0;
-	static double timeElapsed;
 	++frameCount;
-	timeElapsed = getSimulationTime();
-	if (timeElapsed >= 1.0)
+	if (getSimulationTime() >= Frequency.QuadPart)
 	{	
 		QueryPerformanceCounter(&StartCounter);
 		FPS = frameCount;
@@ -23,6 +20,7 @@ int getFPS()
 	}
 	return FPS;
 }
+
 void MoveEnemy(std::shared_ptr<GameObject>& entity)
 {
 	static struct { int key, x1, y1, x2, y2; MoveDirection dir; }
@@ -47,6 +45,7 @@ void MoveEnemy(std::shared_ptr<GameObject>& entity)
 
 void MovePlayer()
 {
+//	MainLight.SetPosition({Player->GetPosition().x, 10, Player->GetPosition().y});
 	static struct { int key, x1, y1, x2, y2; MoveDirection dir; } 
 	Moves[4]
 	{
@@ -81,6 +80,7 @@ void CameraSimulation(float deltaTime)
 {
 	static float rotateSpeed = 90.0;
 	static float leanSpeed = 1.f;
+
 	if (static_cast<bool>(GetAsyncKeyState(VK_LEFT)))  MainCamera.RotateLeftRight(rotateSpeed * deltaTime);
 	if (static_cast<bool>(GetAsyncKeyState(VK_RIGHT))) MainCamera.RotateLeftRight(-rotateSpeed * deltaTime);
 	if (static_cast<bool>(GetAsyncKeyState(VK_UP)))	 MainCamera.RotateUpDown(2 * rotateSpeed * deltaTime);
@@ -89,6 +89,7 @@ void CameraSimulation(float deltaTime)
 	if (static_cast<bool>(GetAsyncKeyState(VK_ADD)))	  MainCamera.ZoomOutin(-40 * deltaTime);
 	if (static_cast<bool>(GetAsyncKeyState(0x45)))		  MainCamera.LeanLeftRight(-leanSpeed * deltaTime);
 	if (static_cast<bool>(GetAsyncKeyState(0x51)))	      MainCamera.LeanLeftRight(leanSpeed * deltaTime);
+	
 	return;
 }
 void GameObjectsSimulation(float deltaTime)
@@ -101,6 +102,9 @@ void GameObjectsSimulation(float deltaTime)
 		i->Simulate(deltaTime);
 
 }
+
+void SetBomb();
+
 void simulation()
 {
 	static double Accumulator;
@@ -116,7 +120,7 @@ void simulation()
 
      if(Player)MovePlayer();
 
-	//Контроль частоты движений(Numpad 0,1,3,5)|Нажать
+	//Контроль частоты движений врагов(Numpad 0,1,3,5)|Нажать
 	static float con;
 	if (static_cast<bool>(GetAsyncKeyState(VK_NUMPAD0))) con = Accumulator;
 	if (static_cast<bool>(GetAsyncKeyState(VK_NUMPAD1))) con = 0.1;

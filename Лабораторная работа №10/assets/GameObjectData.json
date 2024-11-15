@@ -1,6 +1,7 @@
 {
-   "LightObject": {
-    "mesh": "assets\\models\\ChamferBox.obj",
+  "LightObject": {
+    "mesh": "assets\\models\\Box.obj",
+    "texture": "assets\\textures\\light_object.png",
     "material": {
       "diffuse": [ 1.0, 0.0, 0.0, 1.0 ],
       "ambient": [ 0.0, 0.0, 0.0, 1.0 ],
@@ -11,8 +12,9 @@
   },
   "HeavyObject": {
     "mesh": "assets\\models\\Box.obj",
+    "texture": "assets\\textures\\heavy_object.png",
     "material": {
-      "diffuse": [0.0,0.0,1.0,1.0],
+      "diffuse": [ 0.0, 0.0, 1.0, 1.0 ],
       "ambient": [ 0.0, 0.0, 0.0, 1.0 ],
       "specular": [ 0.0, 1.0, 1.0, 1.0 ],
       "emission": [ 0.0, 0.0, 0.0, 1.0 ],
@@ -21,8 +23,9 @@
   },
   "Border": {
     "mesh": "assets\\models\\Box.obj",
+    "texture": "assets\\textures\\border_object.png",
     "material": {
-      "diffuse": [0.0,1.0,0.0,1.0],
+      "diffuse": [ 0.0, 1.0, 0.0, 1.0 ],
       "ambient": [ 0.0, 1.0, 0.0, 1.0 ],
       "specular": [ 0.0, 1.0, 1.0, 1.0 ],
       "emission": [ 0.0, 0.0, 0.0, 1.0 ],

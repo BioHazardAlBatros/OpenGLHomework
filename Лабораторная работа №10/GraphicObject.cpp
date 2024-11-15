@@ -59,8 +59,7 @@
 	void GraphicObject::Draw()
 	{
 		if (this->mesh == nullptr) return;
-		glColor3f(this->color.r, this->color.g, this->color.b);
-
+		
 		if (this->material != nullptr)
 			this->material->Apply();
 

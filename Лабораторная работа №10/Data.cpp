@@ -4,6 +4,7 @@ GameObjectFactory gameObjFactory;
 
 Camera MainCamera;
 Light MainLight;
+Light EnemyLight[3];
 
 LARGE_INTEGER StartCounter,Frequency;
 
@@ -35,7 +36,7 @@ std::shared_ptr<GameObject> Player;
 std::shared_ptr<GameObject> Enemy[3];
 
 GraphicObject planeGraphicObject;
-Texture planeTexture;
+std::shared_ptr<Texture> planeTexture;
 
 void initData()
 { 
@@ -45,20 +46,27 @@ void initData()
 
 	MainCamera.SetPosition({ 0, 15, 17.5 });
 
-	planeTexture.LoadFromFile(R"(example\data\textures\fedya.jpg)");
+	planeTexture = std::make_shared<Texture>();
+	planeTexture->LoadFromFile(R"(assets\textures\fedya.jpg)");
 
 	gameObjFactory.Init(R"(assets/GameObjectData.json)");
 	planeGraphicObject.SetMesh(std::make_unique<Mesh>(R"(assets\models\SimplePlane.obj)"));
-	planeGraphicObject.SetMaterial(std::make_unique<Material>(R"(assets\materials\mat1.txt)"));
+
+	planeGraphicObject.SetMaterial(std::make_shared<PhongMaterialWithTexture>(R"(assets\materials\mat1.txt)", R"(assets\textures\fedya.jpg)"));
+//	planeGraphicObject.SetMaterial(std::make_shared<PhongMaterial>(R"(assets\materials\mat1.txt)"));
+
 	planeGraphicObject.SetPosition({ 0,-0.501,0 });
 
 	Player = gameObjFactory.Create(GameObjectFactory::GameObjectType::PLAYER, 9, -9);
 
 	for (int i = 0; i < 3; i++)
 	{
-		int xPos=rand()%21, yPos=rand()%21;
-		while(pathMap[xPos][yPos]!=0)
-			xPos = rand() % 21 , yPos = rand() % 21 ;
+		int xPos = rand() % 21, yPos = rand() % 21;
+		while (pathMap[xPos][yPos] != 0)
+			xPos = rand() % 21, yPos = rand() % 21;
+//		EnemyLight[i].SetPosition({xPos - 10, 15, yPos - 10});
+//		EnemyLight[i].SetAmbient({ 1.0,0.5,0.1,1.0 });
+
 		Enemy[i] = gameObjFactory.Create(GameObjectFactory::ENEMY, xPos - 10, yPos - 10);
 		pathMap[xPos][yPos] = 4;
 	}

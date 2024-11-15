@@ -12,10 +12,11 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
+#include "Texture.h"
 
 class Material
 {
-	private:
+	protected:
 	std::vector<glm::vec4> material;
 	float shininess;
 
@@ -29,5 +30,5 @@ class Material
 	void SetSpecular(glm::vec4 color);
 	void SetEmission(glm::vec4 color);
 	void SetShininess(float percent);
-	void Apply();
+	virtual void Apply();
 };

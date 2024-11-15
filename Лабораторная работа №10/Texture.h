@@ -28,6 +28,7 @@ class Texture
 	private:
 		GLuint tIndex;
 	public:
+		Texture();
 		static void DisableAll();
 		void LoadFromFile(std::string sourcePath);
 		void Apply(TextureFilter texFilter = TextureFilter::ANISOTROPIC);

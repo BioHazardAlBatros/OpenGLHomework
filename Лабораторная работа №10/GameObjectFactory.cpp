@@ -20,19 +20,18 @@ bool GameObjectFactory::Init(std::string sourcePath)
 		return false;
 	}
 
-//	std::set<std::string> MeshPaths;
 	for (auto& type : jsonFile.GetObject())
 	{
 		std::cout << '\n'<<type.name.GetString() << ':';
-		//auto MeshPtr = MeshPaths.find(type.name.GetString());
-		//if (MeshPtr == MeshPaths.end())
 			Meshes.emplace_back(std::make_shared<Mesh>(jsonFile[type.name]["mesh"].GetString()));
-		//else
-		//	Meshes.emplace_back(Meshes[0]);
-		//MeshPaths.insert(type.name.GetString()); |to do
 
-		std::cout << "Getting material data:\n";
-		Materials.emplace_back(std::make_shared<Material>());
+			std::cout << "Getting material data:\n";
+
+		(jsonFile[type.name].HasMember("texture"))?
+			Materials.emplace_back(std::make_shared<PhongMaterialWithTexture>(jsonFile[type.name]["texture"].GetString(),0))
+			:
+			Materials.emplace_back(std::make_shared<PhongMaterial>());
+		
 		auto tempArr = jsonFile[type.name]["material"]["diffuse"].GetArray();
 		Materials.back()->SetDiffuse({ tempArr[0].GetDouble(),tempArr[1].GetDouble() ,tempArr[2].GetDouble() ,tempArr[3].GetDouble()});
 
@@ -47,7 +46,7 @@ bool GameObjectFactory::Init(std::string sourcePath)
 		
 		Materials.back()->SetShininess(jsonFile[type.name]["material"]["shininess"].GetDouble());
 	}
-	std::endl(std::cout<<std::endl); //https://www.youtube.com/watch?v=GS1-255aj3c
+//	std::endl(std::cout<<std::endl); //https://www.youtube.com/watch?v=GS1-255aj3c
 	return true;
 };
 std::shared_ptr<GameObject> GameObjectFactory::Create(GameObjectType type, glm::vec2 pos) 
