@@ -27,6 +27,9 @@ void display(void)
 	for (auto& i : mapObjects)
 		for (auto& j : i)
 			if(j!=nullptr) j->Draw();
+	
+	for (auto& decal : Decals)
+		decal.Draw();
 
 	glutSwapBuffers();
 

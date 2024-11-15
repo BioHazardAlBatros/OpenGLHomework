@@ -33,7 +33,8 @@ int pathMap[21][21]{
 std::shared_ptr<GameObject> mapObjects[21][21];
 std::shared_ptr<GameObject> Player;
 std::shared_ptr<GameObject> Enemy[3];
-
+std::vector<Decal> Decals;
+int MaxDecals;
 GraphicObject planeGraphicObject;
 
 void initData()
@@ -45,13 +46,14 @@ void initData()
 	MainCamera.SetPosition({ 0, 15, 17.5 });
 
 	gameObjFactory.Init(R"(assets/GameObjectData.json)");
+	Decal::Init();
+	MaxDecals = 10;
 	planeGraphicObject.SetMesh(std::make_unique<Mesh>(R"(assets\models\SimplePlane.obj)"));
 
 	planeGraphicObject.SetMaterial(std::make_shared<PhongMaterialWithTexture>(R"(assets\materials\mat1.txt)", R"(assets\textures\fedya.jpg)"));
 	//	planeGraphicObject.SetMaterial(std::make_shared<PhongMaterial>(R"(assets\materials\mat1.txt)"));
 
 	planeGraphicObject.SetPosition({ 0,-0.501,0 });
-
 	Player = gameObjFactory.Create(GameObjectFactory::GameObjectType::PLAYER, 9, -9);
 
 	for (int i = 0; i < 3; i++)

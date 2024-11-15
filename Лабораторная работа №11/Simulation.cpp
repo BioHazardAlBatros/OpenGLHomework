@@ -40,7 +40,6 @@ void MoveEnemy(std::shared_ptr<GameObject>& entity)
 	};
 	glm::ivec2 entityPos = entity->GetPosition();
 	int PickMove = entity->GetLastDir();
-//	int PickMove = rand() % 4;
 	if (!entity->isMoving() && pathMap[entityPos.x + Moves[PickMove].x1][entityPos.y + Moves[PickMove].y1] == 0)
 	{
 			entity->Move(Moves[PickMove].dir,3);
@@ -161,6 +160,7 @@ void BombSimulation(double currentTime)
 	if(isBombSet && currentTime - placementTime.QuadPart >= timeToActivate)
 	{
 		isBombSet = false;
+		Decals.emplace_back(Decal({bombPos.x-10,bombPos.y-10}));
 		mapObjects[bombPos.x][bombPos.y].reset();
 		pathMap[bombPos.x][bombPos.y] = 0;
 

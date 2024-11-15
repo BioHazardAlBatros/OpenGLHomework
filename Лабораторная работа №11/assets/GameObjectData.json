@@ -25,7 +25,7 @@
     "mesh": "assets\\models\\Box.obj",
     "texture": "assets\\textures\\border_object.png",
     "material": {
-      "diffuse": [ 0.0, 1.0, 0.0, 1.0 ],
+      "diffuse": [ 0.6, 0.6, 0.6, 1.0 ],
       "ambient": [ 0.0, 1.0, 0.0, 1.0 ],
       "specular": [ 0.0, 1.0, 1.0, 1.0 ],
       "emission": [ 0.0, 0.0, 0.0, 1.0 ],

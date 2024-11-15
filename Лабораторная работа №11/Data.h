@@ -24,6 +24,7 @@
 #include "Texture.h"
 #include "PhongMaterial.h"
 #include "PhongMaterialWithTexture.h"
+#include "Decal.h"
 #include "GameObjectFactory.h"
 
 extern GameObjectFactory gameObjFactory;
@@ -32,12 +33,14 @@ extern Camera MainCamera;//(10, 15, 17.5);
 extern Light MainLight;
 
 extern int pathMap[21][21];
-// список игровых объектов расположенных на карте
+// Game Objects
 extern std::shared_ptr<GameObject> mapObjects[21][21];
 extern std::shared_ptr<GameObject> Player;
 extern std::shared_ptr<GameObject> Enemy[3];
-// графический объект для плоскости (частный случай)
-extern GraphicObject planeGraphicObject;
+extern std::vector<Decal> Decals;
+extern int MaxDecals;
 
+extern GraphicObject planeGraphicObject;
 extern LARGE_INTEGER StartCounter,Frequency;
+
 void initData();
